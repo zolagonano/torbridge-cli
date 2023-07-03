@@ -1,0 +1,25 @@
+[package]
+name = "torbridge-cli"
+version = "0.1.0"
+edition = "2021"
+authors = ["Zola Gonano <zolagonano@protonmail.com>"]
+description = "A CLI tool to get Tor Bridges from BridgeDB"
+homepage = "https://github.com/zolagonano/torbridge-cli.git"
+repository = "https://github.com/zolagonano/torbridge-cli.git"
+keywords = ["tor", "bridges", "bridgedb", "cli"]
+categories = ["command-line-utilities"]
+license = "MIT"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "lib"
+path = "src/lib.rs"
+
+[dependencies]
+base64 = "0.21.2"
+reqwest = { version = "0.11.18", features = ["rustls", "json"] }
+scraper = "0.17.1"
+tokio = { version = "1.29.0", features = ["macros", "rt-multi-thread"] }
+viuer = "0.6.2"
