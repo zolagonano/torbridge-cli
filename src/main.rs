@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fs;
 use std::io::{self, Write};
+use std::path::PathBuf;
 
 use viuer::{print_from_file, Config};
 
@@ -8,7 +9,10 @@ fn base64_to_image(base64_image: &str) -> Result<(), Box<dyn Error>> {
     #[allow(deprecated)]
     let decoded_image = base64::decode(base64_image.replace("data:image/jpeg;base64,", ""))?;
 
-    let mut file = fs::File::create("/tmp/.bridgedb_captcha.jpeg")?;
+    let mut file_path = dirs::cache_dir().unwrap_or(PathBuf::new());
+    file_path.push(".bridgedb_captcha.jpeg");
+
+    let mut file = fs::File::create(file_path)?;
 
     file.write_all(&decoded_image)?;
 
@@ -56,7 +60,10 @@ async fn main() -> Result<(), Box<dyn Error>> {
         use_iterm: true,
     };
 
-    print_from_file("/tmp/.bridgedb_captcha.jpeg", &viuer_config)?;
+    let mut file_path = dirs::cache_dir().unwrap_or(PathBuf::new());
+    file_path.push(".bridgedb_captcha.jpeg");
+
+    print_from_file(&file_path, &viuer_config)?;
 
     print!("Enter the captcha: ");
     io::stdout().flush().unwrap();
@@ -71,7 +78,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Your bridges:\n{}", bridgedb_response);
 
-    fs::remove_file("/tmp/.bridgedb_captcha.jpeg")?;
+    fs::remove_file(file_path)?;
 
     Ok(())
 }

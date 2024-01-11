@@ -19,6 +19,7 @@ path = "src/lib.rs"
 
 [dependencies]
 base64 = "0.21.2"
+dirs = "5.0.1"
 reqwest = { version = "0.11.18", features = ["rustls", "json"] }
 scraper = "0.17.1"
 tokio = { version = "1.29.0", features = ["macros", "rt-multi-thread"] }
