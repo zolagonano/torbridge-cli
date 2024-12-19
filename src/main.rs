@@ -43,8 +43,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let transport = prompt_transport_mode(&transport_modes);
 
+    // The captcha requirement seems to be removed but im keeping the codes commented just in case
+    /*
     let captcha = lib::request_transport(&transport).await?;
 
+    
     base64_to_image(&captcha.0)?;
 
     let viuer_config = Config {
@@ -79,6 +82,11 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("Your bridges:\n{}", bridgedb_response);
 
     fs::remove_file(file_path)?;
+    */
+
+
+    let bridgedb_response = lib::request_transport(&transport).await?;
+    println!("Your bridges:\n{}", bridgedb_response);
 
     Ok(())
 }

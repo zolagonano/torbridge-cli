@@ -4,13 +4,13 @@ use std::collections::HashMap;
 use std::error::Error;
 
 pub async fn get_transport_modes() -> Result<Vec<(String, String)>, Box<dyn Error>> {
-    let options_page = reqwest::get("https://bridges.torproject.org/options/")
+    let options_page = reqwest::get("https://bridges.torproject.org/options")
         .await?
         .text()
         .await?;
 
     let parsed_page = Html::parse_document(&options_page);
-    let select_selector = Selector::parse(r#"select[id="bridgedb-advanced-options-transport"]"#)?;
+    let select_selector = Selector::parse(r#"select[id="advanced-options-transport"]"#)?;
 
     let select_options = parsed_page
         .select(&select_selector)
@@ -30,6 +30,33 @@ pub async fn get_transport_modes() -> Result<Vec<(String, String)>, Box<dyn Erro
     Ok(transports)
 }
 
+pub async fn request_transport(transport_type: &str) -> Result<String, Box<dyn Error>> {
+    let url = Url::parse_with_params(
+        "https://bridges.torproject.org/bridges",
+        &[("transport", transport_type)],
+    )?;
+
+    let bridges_page = reqwest::get(url).await?.text().await?;
+    let parsed_page = Html::parse_document(&bridges_page);
+
+
+    let bridgelines_selector = Selector::parse(r#"div[id="bridgelines"]"#)?;
+    let bridge_lines = parsed_page
+        .select(&bridgelines_selector)
+        .next()
+        .map(|div| {
+            div.inner_html()
+                .lines()
+                .map(|line| line.trim().replace("<br>", "\n"))
+                .collect::<String>()
+        })
+        .ok_or("Bridge lines not found")?;
+
+    Ok(bridge_lines)
+}
+
+// The captcha seems to be removed but i will keep the code commented just in case
+/*
 pub async fn request_transport(transport_type: &str) -> Result<(String, String), Box<dyn Error>> {
     let url = Url::parse_with_params(
         "https://bridges.torproject.org/bridges",
@@ -56,6 +83,8 @@ pub async fn request_transport(transport_type: &str) -> Result<(String, String),
         .ok_or("Challenge field not found")?
         .to_string();
 
+    let image_base64 = "".to_string();
+    let challenge_field = "".to_string();
     Ok((image_base64, challenge_field))
 }
 
@@ -98,3 +127,4 @@ pub async fn submit_answer(
 
     Ok(bridge_lines)
 }
+*/
