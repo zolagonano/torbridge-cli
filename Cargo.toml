@@ -1,6 +1,6 @@
 [package]
 name = "torbridge-cli"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Zola Gonano <zolagonano@protonmail.com>"]
 description = "A CLI tool to get Tor Bridges from BridgeDB"
