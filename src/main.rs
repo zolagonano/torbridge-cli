@@ -1,10 +1,8 @@
 use std::error::Error;
-use std::fs;
 use std::io::{self, Write};
-use std::path::PathBuf;
 
-use viuer::{print_from_file, Config};
 
+/*
 fn base64_to_image(base64_image: &str) -> Result<(), Box<dyn Error>> {
     #[allow(deprecated)]
     let decoded_image = base64::decode(base64_image.replace("data:image/jpeg;base64,", ""))?;
@@ -18,6 +16,7 @@ fn base64_to_image(base64_image: &str) -> Result<(), Box<dyn Error>> {
 
     Ok(())
 }
+*/
 
 fn prompt_transport_mode(transport_modes: &[(String, String)]) -> String {
     for (index, (_key, value)) in transport_modes.iter().enumerate() {

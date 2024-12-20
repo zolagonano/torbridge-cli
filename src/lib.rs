@@ -1,6 +1,5 @@
-use reqwest::{Client, Url};
+use reqwest::Url;
 use scraper::{Html, Selector};
-use std::collections::HashMap;
 use std::error::Error;
 
 pub async fn get_transport_modes() -> Result<Vec<(String, String)>, Box<dyn Error>> {
